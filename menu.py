@@ -9,7 +9,7 @@ class tetromino_o:  # Carré jaune
     def __init__(self):
         self.pos = [4, 0]
         self.color = 10
-        self.shape = [[(0+self.pos[0], 0+self.pos[1]), (1+self.pos[0], 0+self.pos[1]), (0+self.pos[0], 1+self.pos[1]), (1+self.pos[0], 1+self.pos[1])]]
+        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         self.stuck = False
         self.rot = 0
 
@@ -18,25 +18,25 @@ class tetromino_o:  # Carré jaune
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
-                #matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la piéce à la matrice à la position de la piéce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
+        
 
 
 class tetromino_i:  # barre bleu
     def __init__(self):
         self.pos = [3, 0]
         self.color = 12
-        self.shape = [[[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],[2, 2, 2, 2]], [[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],[2, 2, 2, 2]]]
+        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
     
@@ -50,23 +50,24 @@ class tetromino_i:  # barre bleu
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape=[[[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
 
 
 class tetromino_s:  # s rouge
     def __init__(self):
         self.pos = [3, 0]
         self.color = 8
-        self.shape = [[[0, 0, 0], [0, 3, 3], [3, 3, 0]], [[0, 3, 0], [0, 3, 3], [0, 0, 3]], [[0, 0, 0], [0, 3, 3], [3, 3, 0]], [[0, 3, 0], [0, 3, 3], [0, 0, 3]]]
+        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
         
@@ -80,23 +81,24 @@ class tetromino_s:  # s rouge
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape=[[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
 
 
 class tetromino_z:  # z vert
     def __init__(self):
         self.pos = [3, 0]
         self.color = 11
-        self.shape = [[[0, 0, 0], [4, 4, 0], [0, 4, 4]], [[0, 0, 4], [0, 4, 4], [0, 4, 0]], [[0, 0, 0], [4, 4, 0], [0, 4, 4]], [[0, 0, 4], [0, 4, 4], [0, 4, 0]]]
+        self.shape = [[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
         
@@ -110,28 +112,29 @@ class tetromino_z:  # z vert
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape=[[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
 
 
 class tetromino_l:  # l orange
     def __init__(self):
         self.pos = [3, 0]
         self.color = 9
-        self.shape = [[[0, 5, 0], [0, 5, 0], [0, 5, 5]], [[0, 0, 0], [0, 0, 5], [5, 5, 5]], [[5, 5, 0], [0, 5, 0], [0, 5, 0]], [[0, 0, 0], [5, 5, 5], [5, 0, 0]]]
+        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
     
     def rotate(self):
-        if self.rot == len(self.shape):
+        if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
@@ -140,23 +143,24 @@ class tetromino_l:  # l orange
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape=[[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
 
 
 class tetromino_j:  # j rose
     def __init__(self):
         self.pos = [3, 0]
         self.color = 14
-        self.shape = [[[0, 0, 6], [0, 0, 6], [0, 6, 6]], [[0, 0, 0], [6, 6, 6], [0, 0, 6]], [[0, 6, 6], [0, 6, 6], [0, 6, 0]], [[0, 0, 0], [6, 0, 0], [6,6,6]]]
+        self.shape = [[[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
     def rotate(self):
@@ -168,23 +172,24 @@ class tetromino_j:  # j rose
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape=[[[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
 
 
 class tetromino_t:  # t violet
     def __init__(self):
         self.pos = [3, 1]
         self.color = 2
-        self.shape = [[[7, 7, 7], [0, 7, 0], [0, 0, 0]], [[0, 7,0], [0, 7, 7], [0, 7, 0]], [[0, 7,0], [7, 7, 0], [0, 7, 0]]]
+        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
 
@@ -198,21 +203,21 @@ class tetromino_t:  # t violet
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+        self.shape=[[[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=1
+            #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
-        for i in range(len(self.shape[self.rot][0])):
-            for j in range(len(self.shape[self.rot])):
-                global matrice
-                #Ajouter la piéce à la matrice à la position de la piéce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = 0
+        for i in (self.shape[self.rot]):
+            global matrice
+            matrice[i[0]][i[1]]=0
+            #Ajouter 0 aux coordonnées de la pièce pour la faire disparaitre
 
 ##################################### FIN CLASSE TETROMINOS #########################################
 tetrominos = [tetromino_o()]
+
 
 ###################### CLASSE DU JEU ######################
 class App:
@@ -281,7 +286,7 @@ class App:
             ############################### JEU #########################################
             global tetrominos
             global matrice
-            print(matrice)
+            
             if pyxel.frame_count % 60 == 0:
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
@@ -317,16 +322,18 @@ class App:
                             tetromino.stuck = True
                         
                         print(tetromino.pos)
+                        print(tetromino.shape)
             # afficher le triomino en cours
                 #get the tetromino that is not stuck
             for tetromino in tetrominos:
                 if tetromino.stuck == False:
                     if pyxel.btnp(pyxel.KEY_DOWN):
                         tetromino.rotate()
-                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > 0:
+                        print(matrice)
+                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > -1:
                         tetromino.supprimer()
                         tetromino.pos[1] -= 1
-                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 8:
+                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 9:
                         tetromino.supprimer()
                         tetromino.pos[1] += 1
                     if pyxel.btnp(pyxel.KEY_SPACE):
@@ -334,7 +341,7 @@ class App:
                         while tetromino.stuck == False:
                             tetromino.supprimer()
                             tetromino.pos[0] += 1
-                            if tetrominos2==[]:
+                            if tetromino.pos[0]==18:
                                 tetromino.stuck = True
                             #Faire le check des cases en dessous
                     tetromino.affichage()
