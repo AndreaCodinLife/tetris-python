@@ -7,7 +7,7 @@ matrice = [[0 for i in range(10)] for j in range(22)]  # Matrice du jeu
 ##################################### Classes Tetrominos #########################################
 class tetromino_o:  # Carré jaune
     def __init__(self):
-        self.pos = [4, 0]
+        self.pos = [0, 4]
         self.color = 10
         self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         self.stuck = False
@@ -34,7 +34,7 @@ class tetromino_o:  # Carré jaune
 
 class tetromino_i:  # barre bleu
     def __init__(self):
-        self.pos = [3, 0]
+        self.pos = [0, 3]
         self.color = 12
         self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [3+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
         self.rot = 0
@@ -65,7 +65,7 @@ class tetromino_i:  # barre bleu
 
 class tetromino_s:  # s rouge
     def __init__(self):
-        self.pos = [3, 0]
+        self.pos = [0, 3]
         self.color = 8
         self.shape = [[[2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]]]
         self.rot = 0
@@ -96,7 +96,7 @@ class tetromino_s:  # s rouge
 
 class tetromino_z:  # z vert
     def __init__(self):
-        self.pos = [3, 0]
+        self.pos = [0, 3]
         self.color = 11
         self.shape = [[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
@@ -127,7 +127,7 @@ class tetromino_z:  # z vert
 
 class tetromino_l:  # l orange
     def __init__(self):
-        self.pos = [3, 0]
+        self.pos = [0, 3]
         self.color = 9
         self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]]]
         self.rot = 0
@@ -158,7 +158,7 @@ class tetromino_l:  # l orange
 
 class tetromino_j:  # j rose
     def __init__(self):
-        self.pos = [3, 0]
+        self.pos = [0, 3]
         self.color = 14
         self.shape = [[[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]]]
         self.rot = 0
@@ -187,7 +187,7 @@ class tetromino_j:  # j rose
 
 class tetromino_t:  # t violet
     def __init__(self):
-        self.pos = [3, 1]
+        self.pos = [1, 3]
         self.color = 2
         self.shape = [[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
@@ -330,10 +330,10 @@ class App:
                     if pyxel.btnp(pyxel.KEY_DOWN):
                         tetromino.rotate()
                         print(matrice)
-                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > -1:
+                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > 0:
                         tetromino.supprimer()
                         tetromino.pos[1] -= 1
-                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 9:
+                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 8:
                         tetromino.supprimer()
                         tetromino.pos[1] += 1
                     if pyxel.btnp(pyxel.KEY_SPACE):
