@@ -36,7 +36,7 @@ class tetromino_i:  # barre bleu
     def __init__(self):
         self.pos = [3, 0]
         self.color = 12
-        self.shape = [[[2], [2], [2], [2]], [[2, 2, 2, 2]]]
+        self.shape = [[[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],[2, 2, 2, 2]], [[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],[2, 2, 2, 2]]]
         self.rot = 0
         self.stuck = False
     
@@ -126,7 +126,7 @@ class tetromino_l:  # l orange
     def __init__(self):
         self.pos = [3, 0]
         self.color = 9
-        self.shape = [[[0, 5, 0], [0, 5, 0], [0, 5, 5]], [[0, 0, 0], [0, 0, 5], [5, 5, 5]], [[5, 5, 0], [0, 1, 0], [0, 1, 0]], [[0, 0, 0], [1, 1, 1], [1, 0, 0]]]
+        self.shape = [[[0, 5, 0], [0, 5, 0], [0, 5, 5]], [[0, 0, 0], [0, 0, 5], [5, 5, 5]], [[5, 5, 0], [0, 5, 0], [0, 5, 0]], [[0, 0, 0], [5, 5, 5], [5, 0, 0]]]
         self.rot = 0
         self.stuck = False
     
@@ -355,6 +355,7 @@ class App:
         elif self.start == True:
             ############################### JEU #########################################
             pyxel.cls(1)
+            pyxel.text(10, 10, f"Score: 0", 1)
         # affichage de la matrice de jeu 0 en noir 1 en jaune, 2 en bleu, 3 en rouge, 4 en vert, 5 en orange, 6 en rose, 7 en violet
             for i in range(10):
                 for j in range(22):
