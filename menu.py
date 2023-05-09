@@ -53,7 +53,7 @@ class tetromino_i:  # barre bleu
         self.shape=[[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [3+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
         for i in (self.shape[self.rot]):
             global matrice
-            matrice[i[0]][i[1]]=1
+            matrice[i[0]][i[1]]=2
             #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
@@ -84,7 +84,7 @@ class tetromino_s:  # s rouge
         self.shape=[[[2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]]]
         for i in (self.shape[self.rot]):
             global matrice
-            matrice[i[0]][i[1]]=1
+            matrice[i[0]][i[1]]=3
             #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
@@ -115,7 +115,7 @@ class tetromino_z:  # z vert
         self.shape= [[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]]]
         for i in (self.shape[self.rot]):
             global matrice
-            matrice[i[0]][i[1]]=1
+            matrice[i[0]][i[1]]=4
             #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
@@ -146,7 +146,7 @@ class tetromino_l:  # l orange
         self.shape= [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]]]
         for i in (self.shape[self.rot]):
             global matrice
-            matrice[i[0]][i[1]]=1
+            matrice[i[0]][i[1]]=5
             #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
@@ -175,7 +175,7 @@ class tetromino_j:  # j rose
         self.shape= [[[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]]]
         for i in (self.shape[self.rot]):
             global matrice
-            matrice[i[0]][i[1]]=1
+            matrice[i[0]][i[1]]=6
             #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
@@ -206,7 +206,7 @@ class tetromino_t:  # t violet
         self.shape=[[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         for i in (self.shape[self.rot]):
             global matrice
-            matrice[i[0]][i[1]]=1
+            matrice[i[0]][i[1]]=7
             #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
 
     def supprimer(self):
