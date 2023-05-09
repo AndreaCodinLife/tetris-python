@@ -9,7 +9,7 @@ class tetromino_o:  # Carré jaune
     def __init__(self):
         self.pos = [4, 0]
         self.color = 10
-        self.shape = [[[1, 1], [1, 1]]]
+        self.shape = [[(0+self.pos[0], 0+self.pos[1]), (1+self.pos[0], 0+self.pos[1]), (0+self.pos[0], 1+self.pos[1]), (1+self.pos[0], 1+self.pos[1])]]
         self.stuck = False
         self.rot = 0
 
@@ -21,8 +21,8 @@ class tetromino_o:  # Carré jaune
         for i in range(len(self.shape[self.rot][0])):
             for j in range(len(self.shape[self.rot])):
                 global matrice
-                #Ajouter la pièce à la matrice à la position de la pièce self.pos[0] et self.pos[1]
-                matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
+                #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
+                #matrice[self.pos[0]+j][self.pos[1]+i] = self.shape[self.rot][j][i]
 
     def supprimer(self):
         for i in range(len(self.shape[self.rot][0])):
@@ -212,8 +212,7 @@ class tetromino_t:  # t violet
                 matrice[self.pos[0]+j][self.pos[1]+i] = 0
 
 ##################################### FIN CLASSE TETROMINOS #########################################
-tetrominos = [tetromino_l()]
-tetrominos2=[tetromino_l()]
+tetrominos = [tetromino_o()]
 
 ###################### CLASSE DU JEU ######################
 class App:
@@ -280,8 +279,9 @@ class App:
             ############################### FIN MENU ##################################
         elif self.start == True:
             ############################### JEU #########################################
-            global tetrominos,tetrominos2
+            global tetrominos
             global matrice
+            print(matrice)
             if pyxel.frame_count % 60 == 0:
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
