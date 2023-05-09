@@ -41,11 +41,14 @@ class tetromino_i:  # barre bleu
         self.stuck = False
     
     def rotate(self):
+        self.supprimer()
         if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
+        self.affichage()
         print(self.rot)
+
 
 
     def affichage(self):
@@ -72,10 +75,12 @@ class tetromino_s:  # s rouge
         self.stuck = False
         
     def rotate(self):
+        self.supprimer()
         if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
+        self.affichage()
         print(self.rot)
 
 
@@ -103,10 +108,12 @@ class tetromino_z:  # z vert
         self.stuck = False
         
     def rotate(self):
+        self.supprimer()
         if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
+        self.affichage()
         print(self.rot)
 
 
@@ -134,10 +141,12 @@ class tetromino_l:  # l orange
         self.stuck = False
     
     def rotate(self):
+        self.supprimer()
         if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
+        self.affichage()
         print(self.rot)
 
 
@@ -163,11 +172,14 @@ class tetromino_j:  # j rose
         self.shape = [[[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
+
     def rotate(self):
+        self.supprimer()
         if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
+        self.affichage()
         print(self.rot)
 
     def affichage(self):
@@ -194,10 +206,12 @@ class tetromino_t:  # t violet
         self.stuck = False
 
     def rotate(self):
+        self.supprimer()
         if self.rot == len(self.shape)-1:
             self.rot = 0
         else:
             self.rot += 1
+        self.affichage()
         print(self.rot)
 
 
