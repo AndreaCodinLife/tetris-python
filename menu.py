@@ -282,18 +282,40 @@ class App:
             ############################### JEU #########################################
             global tetrominos,tetrominos2
             global matrice
-            ##Gravité
-            #toutes les secondes, le block qui a self.stuck = False, ajouter 1 à son y
             if pyxel.frame_count % 60 == 0:
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
-                        #                      CARRÉ                                                    Barre verticale                                                                     Barre horizontale    
-                        if (tetromino.pos[0] < 18 and tetromino.color == 10) or (tetromino.pos[0] < 16 and tetromino.color == 12 and tetromino.rot == 0) or (tetromino.pos[0] < 19 and tetromino.color == 12 and tetromino.rot == 1) or (tetromino.pos[0] <17  and tetromino.color == 9 and (tetromino.rot == 0 or tetromino.rot==3)) or (tetromino.pos[0] <17  and tetromino.color == 9 and tetromino.rot == 1) or (tetromino.pos[0] <18  and tetromino.color == 9 and tetromino.rot == 4):
-                            tetromino.supprimer()
-                            tetromino.pos[0] += 1
-                        else:
-                            tetrominos2.pop(0)
-                            #tetromino.stuck = True
+                        #on verifie si on déplace la matrice (shape) du tetromino vers le bas, si dans la matrice du jeu, d'autres tétrominos sont "supprimé" (on peut faire cela en verifiant la somme de tout les nombres de la matrice, si ce nombre est le meme que la matrice précédente alors, le tétromino déscend d'une case, sinon il devient stuck)
+                        
+                        #nombre de l'addition de la matrice du jeu avant le déplacement du tétromino (pour vérifier si le tétromino peut descendre d'une case)
+                        nb_matrice = 0
+                        for i in range(20):
+                            for j in range(9):
+                                nb_matrice += matrice[i][j]
+                        #nombre de l'addition de la matrice du jeu après le déplacement du tétromino (pour vérifier si le tétromino peut descendre d'une case)
+                        nb_matrice2 = 0
+                        matrice2 = matrice
+                        #on déplace le tétromino d'une case vers le bas si il ne sort pas de la matrice du jeu (si il ne sort pas de la matrice du jeu, on ajoute 1 à la position y du tétromino)
+                        # si le déplacement crée une erreur 'list index out of range', on ne déplace pas le tétromino
+                        if tetromino.pos[0] < 19:
+                            try:
+                                tetromino.supprimer()
+                                tetromino.pos[0] += 1
+                                tetromino.affichage()
+                            except:
+                                #tetromino.pos[0] -= 1
+                                tetromino.stuck = True
+                            #on regarge si ça crée une erreur 'list index out of range'
+                            
+                        #on vérifie si le tétromino peut descendre d'une case
+                        for i in range(20):
+                            for j in range(9):
+                                nb_matrice2 += matrice2[i][j]
+                        #si le tétromino ne peut pas descendre d'une case, on le remet à sa position initiale
+                        if nb_matrice != nb_matrice2:
+                            tetromino.pos[0] -= 1
+                            tetromino.stuck = True
+                        
                         print(tetromino.pos)
             # afficher le triomino en cours
                 #get the tetromino that is not stuck
