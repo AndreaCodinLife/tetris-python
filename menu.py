@@ -264,7 +264,7 @@ class App:
                 pygame.mixer.Channel(1).play(pygame.mixer.Sound('select.wav'))
                 self.selected_item = (self.selected_item - 1) % len(self.menu_items)
 
-            if pyxel.btnp(pyxel.KEY_SPACE):
+            if pyxel.btnp(pyxel.KEY_RETURN):
                 if self.menu_items[self.selected_item] == "Play":
                     #On lance le jeu ici
                     print("Bouton Play cliqué")
