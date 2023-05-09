@@ -1,5 +1,5 @@
 import pyxel
-import main
+#import main
 import pygame
 import random
 
@@ -36,7 +36,7 @@ class tetromino_i:  # barre bleu
     def __init__(self):
         self.pos = [3, 0]
         self.color = 12
-        self.shape = [[[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],[2, 2, 2, 2]], [[2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0], [2, 0, 0, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0],[2, 2, 2, 2]]]
+        self.shape = [[[2], [2], [2], [2]], [[2, 2, 2, 2]]]
         self.rot = 0
         self.stuck = False
     
@@ -66,7 +66,7 @@ class tetromino_s:  # s rouge
     def __init__(self):
         self.pos = [3, 0]
         self.color = 8
-        self.shape = [[[0, 0, 0], [0, 3, 3], [3, 3, 0]], [[0, 3, 0], [0, 3, 3], [0, 0, 3]], [[0, 0, 0], [0, 3, 3], [3, 3, 0]], [[0, 3, 0], [0, 3, 3], [0, 0, 3]]]
+        self.shape = [[[0, 0, 0], [0, 1, 1], [1, 1, 0]], [[0, 1, 0], [0, 1, 1], [0, 0, 1]], [[0, 0, 0], [0, 1, 1], [1, 1, 0]], [[0, 1, 0], [0, 1, 1], [0, 0, 1]]]
         self.rot = 0
         self.stuck = False
         
@@ -126,12 +126,12 @@ class tetromino_l:  # l orange
     def __init__(self):
         self.pos = [3, 0]
         self.color = 9
-        self.shape = [[[0, 5, 0], [0, 5, 0], [0, 5, 5]], [[0, 0, 0], [0, 0, 5], [5, 5, 5]], [[5, 5, 0], [0, 5, 0], [0, 5, 0]], [[0, 0, 0], [5, 5, 5], [5, 0, 0]]]
+        self.shape = [[[0, 5, 0], [0, 5, 0], [0, 5, 5]], [[0, 0, 0], [0, 0, 5], [5, 5, 5]], [[5, 5, 0], [0, 1, 0], [0, 1, 0]], [[0, 0, 0], [1, 1, 1], [1, 0, 0]]]
         self.rot = 0
         self.stuck = False
     
     def rotate(self):
-        if self.rot == len(self.shape)-1:
+        if self.rot == len(self.shape):
             self.rot = 0
         else:
             self.rot += 1
@@ -156,7 +156,7 @@ class tetromino_j:  # j rose
     def __init__(self):
         self.pos = [3, 0]
         self.color = 14
-        self.shape = [[[0, 0, 6], [0, 0, 6], [0, 6, 6]], [[0, 0, 0], [6, 6, 6], [0, 0, 6]], [[0, 6, 6], [0, 6, 6], [0, 6, 0]], [[0, 0, 0], [6, 0, 0], [6,6,6]]]
+        self.shape = [[[0, 0, 6], [0, 0, 6], [0, 6, 6]], [[0, 0, 0], [6, 6, 6], [0, 0, 6]], [[0, 6, 6], [0, 6, 6], [0, 6, 0]], [[0, 0, 0], [6, 0, 0], [6,6,6]],]
         self.rot = 0
         self.stuck = False
     def rotate(self):
@@ -184,7 +184,7 @@ class tetromino_t:  # t violet
     def __init__(self):
         self.pos = [3, 1]
         self.color = 2
-        self.shape = [[[7, 7, 7], [0, 7, 0], [0, 0, 0]], [[0, 7,0], [0, 7, 7], [0, 7, 0]], [[0, 7,0], [7, 7, 0], [0, 7, 0]]]
+        self.shape = [[[7, 7, 7], [0, 7, 0], [0, 0, 0]], [[0, 7,0], [0, 7, 7], [0, 7, 0]], [[0, 7,0], [1, 7, 0], [0, 7, 0]]]
         self.rot = 0
         self.stuck = False
 
@@ -212,7 +212,8 @@ class tetromino_t:  # t violet
                 matrice[self.pos[0]+j][self.pos[1]+i] = 0
 
 ##################################### FIN CLASSE TETROMINOS #########################################
-tetrominos = [tetromino_o()]
+tetrominos = [tetromino_l()]
+tetrominos2=[tetromino_l()]
 
 ###################### CLASSE DU JEU ######################
 class App:
@@ -279,7 +280,7 @@ class App:
             ############################### FIN MENU ##################################
         elif self.start == True:
             ############################### JEU #########################################
-            global tetrominos
+            global tetrominos,tetrominos2
             global matrice
             ##Gravité
             #toutes les secondes, le block qui a self.stuck = False, ajouter 1 à son y
@@ -287,11 +288,12 @@ class App:
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
                         #                      CARRÉ                                                    Barre verticale                                                                     Barre horizontale    
-                        if (tetromino.pos[0] < 18 and tetromino.color == 10) or (tetromino.pos[0] < 16 and tetromino.color == 12 and tetromino.rot == 0) or (tetromino.pos[0] < 19 and tetromino.color == 12 and tetromino.rot == 1):
+                        if (tetromino.pos[0] < 18 and tetromino.color == 10) or (tetromino.pos[0] < 16 and tetromino.color == 12 and tetromino.rot == 0) or (tetromino.pos[0] < 19 and tetromino.color == 12 and tetromino.rot == 1) or (tetromino.pos[0] <17  and tetromino.color == 9 and (tetromino.rot == 0 or tetromino.rot==3)) or (tetromino.pos[0] <17  and tetromino.color == 9 and tetromino.rot == 1) or (tetromino.pos[0] <18  and tetromino.color == 9 and tetromino.rot == 4):
                             tetromino.supprimer()
                             tetromino.pos[0] += 1
                         else:
-                            tetromino.stuck = True
+                            tetrominos2.pop(0)
+                            #tetromino.stuck = True
                         print(tetromino.pos)
             # afficher le triomino en cours
                 #get the tetromino that is not stuck
@@ -310,7 +312,7 @@ class App:
                         while tetromino.stuck == False:
                             tetromino.supprimer()
                             tetromino.pos[0] += 1
-                            if tetromino.pos[0] == 18:
+                            if tetrominos2==[]:
                                 tetromino.stuck = True
                             #Faire le check des cases en dessous
                     tetromino.affichage()
@@ -355,7 +357,6 @@ class App:
         elif self.start == True:
             ############################### JEU #########################################
             pyxel.cls(1)
-            pyxel.text(10, 10, f"Score: 0", 1)
         # affichage de la matrice de jeu 0 en noir 1 en jaune, 2 en bleu, 3 en rouge, 4 en vert, 5 en orange, 6 en rose, 7 en violet
             for i in range(10):
                 for j in range(22):
