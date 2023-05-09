@@ -301,7 +301,8 @@ class tetromino_t:  # t violet
                 pass
 
 ##################################### FIN CLASSE TETROMINOS #########################################
-tetrominos = [tetromino_i()]
+liste_tetro = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
+tetrominos = [liste_tetro[random.randint(0, len(liste_tetro) - 1)]]
 
 
 ###################### CLASSE DU JEU ######################
@@ -315,6 +316,7 @@ class App:
         self.selected_color = 2 # violet
         self.button_height = 32 
         self.button_width = 70
+        self.tetro_futur = []
         #Blocs de tetris qui tombent en arrière plan
         pyxel.load("tetris.pyxres")
         self.blocks = []
@@ -371,6 +373,8 @@ class App:
             ############################### JEU #########################################
             global tetrominos
             global matrice
+            for i in range(2):
+                self.tetro_futur.append(random.randint(0,len(tetrominos) -1 ))
             
             if pyxel.frame_count % 30 == 0:
                 for tetromino in tetrominos:
@@ -393,13 +397,14 @@ class App:
                                 tetromino.supprimer()
                                 tetromino.pos[0] += 1
                                 tetromino.affichage()
-                                print("tetromino descendu")
                             except:
                                 print("tetromino non descendu")
                                 tetromino.supprimer()
                                 tetromino.pos = pos
                                 tetromino.stuck = True
                                 tetromino.affichage()
+                        else: 
+                            tetromino.stuck = True
 
                             
                             #on regarge si ça crée une erreur 'list index out of range'
@@ -421,7 +426,8 @@ class App:
             for tetromino in tetrominos:
                 if tetromino.stuck == False:
                     if pyxel.btnp(pyxel.KEY_DOWN):
-                        tetromino.rotate()
+                        if not (tetromino.pos[1] == -1 and tetromino.color == 11 and tetromino.rot == 1):
+                            tetromino.rotate()
                         print(matrice)
                     if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > 0:
                         tetromino.supprimer()
@@ -456,6 +462,7 @@ class App:
                                         tetromino.pos[0] += 1
                                         tetromino.affichage()
                                         print("tetromino descendu")
+                                        print(tetromino.pos[0], tetromino.pos[1])
                                     except:
                                         print("tetromino non descendu")
                                         tetromino.supprimer()
@@ -488,7 +495,9 @@ class App:
             if check == 0:
                 ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
                 idx = random.randint(0, 6)
-                tetrominos.append(ls[idx])
+                t = self.tetro_futur.pop(0)
+                self.tetro_futur.append(idx)
+                tetrominos.append(ls[t])
 
             ############################### FIN JEU #########################################
             
@@ -545,7 +554,12 @@ class App:
                         pyxel.rect(i*10+50, j*10, 10, 10, 2)
                         pyxel.blt(i*10+50 +1, j*10 +1,0,48,8,8,8)
             ############################### FIN JEU #########################################
-        
+            pyxel.rect(2, 40, 45, 140, 0)
+            ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
+            # for i in range(len(self.tetro_futur)):
+            #     if self.tetro_futur[i] == 0:
+            #         pyxel.rect(i*10+50, j*10, 10, 10, 14)
+            #         ls[0].affichage()
 
 pygame.mixer.init()
 pygame.mixer.music.set_volume(0.2)
