@@ -1,5 +1,5 @@
 import pyxel
-#import main
+import main
 import pygame
 import random
 import time
@@ -333,14 +333,15 @@ def lignes_():
     for i in range (22):
         if 0 not in matrice[i]:
             matrice[i]=[0,0,0,0,0,0,0,0,0,0]
-            score+=30
+            score+=200
             lignes_d(i)
             
 
 ###################### CLASSE DU JEU ######################
 class App:
     def __init__(self):
-        self.start = False
+        global score
+        self.start = 0
         pyxel.init(200, 200, title="T'ES TRISTE", fps=60)
         self.menu_items = ["Play", "Help", "Quit"]
         self.selected_item = 0 
@@ -366,7 +367,9 @@ class App:
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        if self.start == False:
+        global score,tetrominos
+        global matrice,matrice3
+        if self.start == 0:
             ############################### MENU ##################################
             for block in self.blocks:
                 block[2] += 0.5
@@ -394,22 +397,24 @@ class App:
                     #pygame.mixer.Channel(1).play(pygame.mixer.Sound('levelstrt.wav'))
                     pygame.time.delay(1000)
                     #pygame.mixer.Channel(0).play(pygame.mixer.Sound('main_theme.mp3'))
-                    self.start = True
+                    self.start = 1
                     print("Le jeu est lancé")
                 elif self.menu_items[self.selected_item] == "Help":
                     print("Bouton Help cliqué")
                 elif self.menu_items[self.selected_item] == "Quit":
                     pyxel.quit()
             ############################### FIN MENU ##################################
-        elif self.start == True:
+        elif self.start == 1:
             ############################### JEU #########################################
-            global tetrominos
-            global matrice,matrice3,score
+            
 
             for i in range(2):
                 self.tetro_futur.append(random.randint(0,len(liste_tetro) -1 ))
             
             if pyxel.frame_count % 15 == 0:
+                if score>high_score:
+                            with open('best_scores.txt', 'w') as output:
+                                output.write(str(score))
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
                         #on verifie si on déplace la matrice (shape) du tetromino vers le bas, si dans la matrice du jeu, d'autres tétrominos sont "supprimé" (on peut faire cela en verifiant la somme de tout les nombres de la matrice, si ce nombre est le meme que la matrice précédente alors, le tétromino déscend d'une case, sinon il devient stuck)
@@ -443,6 +448,7 @@ class App:
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
                             tetromino.stuck = True
+                            pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
 
                             
                             #on regarge si ça crée une erreur 'list index out of range'
@@ -460,14 +466,19 @@ class App:
                             for i in range(22):
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
-                            
-                            tetromino.stuck = True
+                            if 0<tetromino.pos[0]<2 and 0<tetromino.pos[1]<8:
+                                self.start=3
+                                
+                            else:
+                                tetromino.stuck = True
+                                pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
                             
                         
             # afficher le triomino en cours
                 #get the tetromino that is not stuck
             for tetromino in tetrominos:
                 if tetromino.stuck == False:
+                        
                     
                     if pyxel.btnp(pyxel.KEY_DOWN):
                         if not (tetromino.pos[1] == -1 and tetromino.color == 11 and tetromino.rot == 1):
@@ -532,6 +543,7 @@ class App:
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
                                 tetromino.stuck = True
+                                pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
                                     
                                     
                                 
@@ -554,6 +566,7 @@ class App:
                                             matrice[i][j]=matrice3[i][j]
                                 
                                 tetromino.stuck = True
+                                pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
                     tetromino.affichage()
     
                             
@@ -583,7 +596,10 @@ class App:
 
     def draw(self):
         global score
-        if self.start == False:
+        if self.start==3:
+            pyxel.cls(0)
+            pyxel.text(80,100,f"GAME OVER", 7)
+        if self.start == 0:
         ############################### MENU #########################################
             pyxel.cls(0)
             for block in self.blocks:
@@ -603,7 +619,7 @@ class App:
                 pyxel.rectb(65, 50 + i*self.button_height, self.button_width, self.button_height, color)
                 pyxel.text(90, 63 + i*self.button_height, item, 11)
         ############################### FIN MENU #########################################
-        elif self.start == True:
+        elif self.start == 1:
             ############################### JEU #########################################
             pyxel.cls(1)
         # affichage de la matrice de jeu 0 en noir 1 en jaune, 2 en bleu, 3 en rouge, 4 en vert, 5 en orange, 6 en rose, 7 en violet
@@ -634,6 +650,7 @@ class App:
                         pyxel.rect(i*10+50, j*10, 10, 10, 2)
                         pyxel.blt(i*10+50 +1, j*10 +1,0,48,8,8,8)
             pyxel.text(2,2,f"SCORE: {score}", 11)
+            pyxel.text(2,8, f'HIGHEST:{high_score}', 11)
             ############################### FIN JEU #########################################
             #pyxel.rect(2, 40, 45, 140, 0)
             ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
@@ -642,6 +659,7 @@ class App:
                      
 
 pygame.mixer.init()
-pygame.mixer.music.set_volume(0.2)
+pygame.mixer.Channel(0).set_volume(0.2)
+pygame.mixer.Channel(1).set_volume(0.5)
 pygame.mixer.Channel(0).play(pygame.mixer.Sound('main_theme.mp3'), -1)
 App()
