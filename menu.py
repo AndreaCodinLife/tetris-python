@@ -2,8 +2,14 @@ import pyxel
 #import main
 import pygame
 import random
+import time
 
 matrice = [[0 for i in range(10)] for j in range(22)]  # Matrice du jeu
+matrice3=[[0 for i in range(10)] for j in range(22)]
+
+score=0
+f=open("best_scores.txt", "r")
+high_score=int(f.readlines()[0])
 ##################################### Classes Tetrominos #########################################
 class tetromino_o:  # Carré jaune
     def __init__(self):
@@ -12,6 +18,7 @@ class tetromino_o:  # Carré jaune
         self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         self.stuck = False
         self.rot = 0
+        self.mini=[0,0]
 
     def rotate(self):
         pass
@@ -37,6 +44,7 @@ class tetromino_i:  # barre bleu
         self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [3+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
+        self.mini=[8,0]
     
     def rotate(self):
         self.supprimer()
@@ -83,6 +91,7 @@ class tetromino_s:  # s rouge
         self.shape = [[[2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
+        self.mini=[16,0]
         
     def rotate(self):
         self.supprimer()
@@ -128,6 +137,7 @@ class tetromino_z:  # z vert
         self.shape = [[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
+        self.mini=[24,0]
         
     def rotate(self):
         self.supprimer()
@@ -173,7 +183,8 @@ class tetromino_l:  # l orange
         self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
-    
+        self.mini=[32,0]
+
     def rotate(self):
         self.supprimer()
         if self.rot == len(self.shape)-1:
@@ -220,6 +231,7 @@ class tetromino_j:  # j rose
         self.shape = [[[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 0+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]]], [[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 2+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
+        self.mini=[40,0]
 
     def rotate(self):
         self.supprimer()
@@ -264,6 +276,7 @@ class tetromino_t:  # t violet
         self.shape = [[[1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 2+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 1+self.pos[1]]], [[0+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 1+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 2+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 1+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
+        self.mini=[48,0]
 
     def rotate(self):
         self.supprimer()
@@ -304,6 +317,25 @@ class tetromino_t:  # t violet
 liste_tetro = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
 tetrominos = [liste_tetro[random.randint(0, len(liste_tetro) - 1)]]
 
+def lignes_d(x):
+    save=[]
+    for i in range(x):
+        save.append(matrice[i])
+    for i in range(x):
+        try:
+            matrice[i+1]=save[i]
+        except:
+            pass
+    matrice[1]=[0,0,0,0,0,0,0,0,0,0]
+
+def lignes_():
+    global score
+    for i in range (22):
+        if 0 not in matrice[i]:
+            matrice[i]=[0,0,0,0,0,0,0,0,0,0]
+            score+=30
+            lignes_d(i)
+            
 
 ###################### CLASSE DU JEU ######################
 class App:
@@ -372,11 +404,12 @@ class App:
         elif self.start == True:
             ############################### JEU #########################################
             global tetrominos
-            global matrice
+            global matrice,matrice3,score
+
             for i in range(2):
-                self.tetro_futur.append(random.randint(0,len(tetrominos) -1 ))
+                self.tetro_futur.append(random.randint(0,len(liste_tetro) -1 ))
             
-            if pyxel.frame_count % 30 == 0:
+            if pyxel.frame_count % 15 == 0:
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
                         #on verifie si on déplace la matrice (shape) du tetromino vers le bas, si dans la matrice du jeu, d'autres tétrominos sont "supprimé" (on peut faire cela en verifiant la somme de tout les nombres de la matrice, si ce nombre est le meme que la matrice précédente alors, le tétromino déscend d'une case, sinon il devient stuck)
@@ -389,21 +422,26 @@ class App:
                         #nombre de l'addition de la matrice du jeu après le déplacement du tétromino (pour vérifier si le tétromino peut descendre d'une case)
                         nb_matrice2 = 0
                         matrice2 = matrice
-                        #on déplace le tétromino d'une case vers le bas si il ne sort pas de la matrice du jeu (si il ne sort pas de la matrice du jeu, on ajoute 1 à la position y du tétromino)
-                        # si le déplacement crée une erreur 'list index out of range', on ne déplace pas le tétromino
+                        #on déplace le tétromino d'une case vers le bas si il ne sort pas de la matrice du jeu (si il ne sort
+                        
                         if tetromino.pos[0] < 19:
                             pos = tetromino.pos
+                            
                             try:
+                                for i in range(22):
+                                        for j in range(10):
+                                            matrice3[i][j]=matrice[i][j]
                                 tetromino.supprimer()
                                 tetromino.pos[0] += 1
                                 tetromino.affichage()
+                                
+                                print("tetromino descendu")
                             except:
-                                print("tetromino non descendu")
-                                tetromino.supprimer()
-                                tetromino.pos = pos
-                                tetromino.stuck = True
-                                tetromino.affichage()
-                        else: 
+                                pass
+                        else:
+                            for i in range(22):
+                                        for j in range(10):
+                                            matrice[i][j]=matrice3[i][j]
                             tetromino.stuck = True
 
                             
@@ -418,71 +456,106 @@ class App:
                             print("tetromino non descendu essai 2")
                             tetromino.supprimer()
                             tetromino.pos[0] -= 1
+
+                            for i in range(22):
+                                        for j in range(10):
+                                            matrice[i][j]=matrice3[i][j]
+                            
                             tetromino.stuck = True
-                            tetromino.affichage()
+                            
                         
             # afficher le triomino en cours
                 #get the tetromino that is not stuck
             for tetromino in tetrominos:
                 if tetromino.stuck == False:
+                    
                     if pyxel.btnp(pyxel.KEY_DOWN):
                         if not (tetromino.pos[1] == -1 and tetromino.color == 11 and tetromino.rot == 1):
                             tetromino.rotate()
-                        print(matrice)
+
+                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] >= 0 and tetromino.color==11 and tetromino.rot==1:
+                        tetromino.supprimer()
+                        try:
+                            tetromino.pos[1] -= 1
+                        except:
+                            
+                            tetromino.pos[1] += 1
+
                     if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > 0:
                         tetromino.supprimer()
                         try:
                             tetromino.pos[1] -= 1
                         except:
+                            
                             tetromino.pos[1] += 1
+                            
+                    
 
                     if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 8:
                         tetromino.supprimer()
                         try:
                             tetromino.pos[1] += 1
                         except:
+                            
                             tetromino.pos[1] -= 1
                     if pyxel.btnp(pyxel.KEY_SPACE):
-                        if pyxel.btnp(pyxel.KEY_SPACE):
+                    
                         #tetrominos pos y et pos x jusqu'a une collision avec un autre tetromino ou le bas
-                            while tetromino.stuck == False:
+                        while tetromino.stuck == False:
+                            
                             #vérifier si le tetromino peut descendre d'une case comme dans le for tetromino in tetrominos
                            
-                                nb_matrice = 0
-                                for i in range(20):
-                                    for j in range(9):
-                                        nb_matrice += matrice[i][j]
+                            nb_matrice = 0
+                            for i in range(20):
+                                for j in range(9):
+                                    nb_matrice += matrice[i][j]
                             #nombre de l'addition de la matrice du jeu après le déplacement du tétromino (pour vérifier si le tétromino peut descendre d'une case)
-                                nb_matrice2 = 0
-                                matrice2 = matrice
-                                if tetromino.pos[0] < 19:
-                                    pos = tetromino.pos
-                                    try:
-                                        tetromino.supprimer()
-                                        tetromino.pos[0] += 1
-                                        tetromino.affichage()
-                                        print("tetromino descendu")
-                                        print(tetromino.pos[0], tetromino.pos[1])
-                                    except:
-                                        print("tetromino non descendu")
-                                        tetromino.supprimer()
-                                        tetromino.pos = pos
-                                        tetromino.stuck = True
-                                        tetromino.affichage()
+                            nb_matrice2 = 0
+                            matrice2 = matrice
+                            
+                            if tetromino.pos[0] < 19:
+                                pos = tetromino.pos
+                                
+                                try:
+                                    for i in range(22):
+                                        for j in range(10):
+                                            matrice3[i][j]=matrice[i][j]
+                                    tetromino.supprimer()
+                                    tetromino.pos[0] += 1
+                                    tetromino.affichage()
+                                    
+                                    print("tetromino descendu")
+                                except:
+                                    pass
+                            else: 
+                                for i in range(22):
+                                        for j in range(10):
+                                            matrice[i][j]=matrice3[i][j]
+                                tetromino.stuck = True
+                                    
+                                    
+                                
 
                                 #on regarge si ça crée une erreur 'list index out of range'
 
                             #on vérifie si le tétromino peut descendre d'une case
-                                for i in range(20):
-                                    for j in range(9):
-                                        nb_matrice2 += matrice2[i][j]
+                            
+                            for i in range(20):
+                                for j in range(9):
+                                    nb_matrice2 += matrice2[i][j]
                             #si le tétromino ne peut pas descendre d'une case, on le remet à sa position initiale
-                                if nb_matrice != nb_matrice2:
-                                    print("tetromino non descendu essai 2")
-                                    tetromino.supprimer()
-                                    tetromino.pos[0] -= 1
-                                    tetromino.stuck = True
+                            if nb_matrice != nb_matrice2:
+                                print("tetromino non descendu essai 2")
+                                tetromino.supprimer()
+                                
+                                tetromino.pos[0] -= 1
+                                for i in range(22):
+                                        for j in range(10):
+                                            matrice[i][j]=matrice3[i][j]
+                                
+                                tetromino.stuck = True
                     tetromino.affichage()
+    
                             
 
 
@@ -492,17 +565,24 @@ class App:
                 check = 0
                 if tetromino.stuck == False:
                     check = 1
+                else:
+                    tetrominos.pop()
+                    score+=15
             if check == 0:
+                
                 ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
                 idx = random.randint(0, 6)
                 t = self.tetro_futur.pop(0)
                 self.tetro_futur.append(idx)
                 tetrominos.append(ls[t])
+                lignes_()
+                
 
             ############################### FIN JEU #########################################
             
 
     def draw(self):
+        global score
         if self.start == False:
         ############################### MENU #########################################
             pyxel.cls(0)
@@ -553,15 +633,15 @@ class App:
                     elif matrice[j][i] == 7:
                         pyxel.rect(i*10+50, j*10, 10, 10, 2)
                         pyxel.blt(i*10+50 +1, j*10 +1,0,48,8,8,8)
+            pyxel.text(2,2,f"SCORE: {score}", 11)
             ############################### FIN JEU #########################################
-            pyxel.rect(2, 40, 45, 140, 0)
+            #pyxel.rect(2, 40, 45, 140, 0)
             ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
-            # for i in range(len(self.tetro_futur)):
-            #     if self.tetro_futur[i] == 0:
-            #         pyxel.rect(i*10+50, j*10, 10, 10, 14)
-            #         ls[0].affichage()
+            for i in range(len(self.tetro_futur)):
+                pyxel.blt(180, 5*i,0,ls[self.tetro_futur[i]].mini[0],ls[self.tetro_futur[i]].mini[1],8,8)
+                     
 
 pygame.mixer.init()
 pygame.mixer.music.set_volume(0.2)
-#pygame.mixer.Channel(0).play(pygame.mixer.Sound('main_theme.mp3'), -1)
+pygame.mixer.Channel(0).play(pygame.mixer.Sound('main_theme.mp3'), -1)
 App()
