@@ -358,14 +358,19 @@ def changement_vitesse():
     global score,vitesse
     if 1000<score<2000 :
         vitesse=50
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('vit.wav'))
     if 2000<score<3000 :
         vitesse=40
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('vit.wav'))
     if 3000<score<4000 :
         vitesse=30
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('vit.wav'))
     if 4000<score<5000 :
         vitesse=20
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('vit.wav'))
     if 5000<score :
         vitesse=10
+        pygame.mixer.Channel(1).play(pygame.mixer.Sound('vit.wav'))
 
 
 
