@@ -10,6 +10,9 @@ matrice3=[[0 for i in range(10)] for j in range(22)]
 score=0
 f=open("best_scores.txt", "r")
 high_score=int(f.readlines()[0])
+
+vitesse=60
+music='original'
 ##################################### Classes Tetrominos #########################################
 class tetromino_o:  # Carré jaune
     def __init__(self):
@@ -19,6 +22,7 @@ class tetromino_o:  # Carré jaune
         self.stuck = False
         self.rot = 0
         self.mini=[0,0]
+        self.color2=1
 
     def rotate(self):
         pass
@@ -39,12 +43,13 @@ class tetromino_o:  # Carré jaune
 
 class tetromino_i:  # barre bleu
     def __init__(self):
-        self.pos = [0, 3]
+        self.pos = [4, 3]
         self.color = 12
-        self.shape = [[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [3+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
+        self.shape = [[[self.pos[0]-3, 0+self.pos[1]], [self.pos[0]-1, 0+self.pos[1]], [self.pos[0]-2, 0+self.pos[1]], [0+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
         self.rot = 0
         self.stuck = False
         self.mini=[8,0]
+        self.color2=2
     
     def rotate(self):
         self.supprimer()
@@ -59,7 +64,7 @@ class tetromino_i:  # barre bleu
 
     def affichage(self):
         # Ajouter la pièce au centre de la matrice du jeu (sur la ligne 0)
-        self.shape=[[[0+self.pos[0], 0+self.pos[1]], [1+self.pos[0], 0+self.pos[1]], [2+self.pos[0], 0+self.pos[1]], [3+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
+        self.shape=[[[self.pos[0]-3, 0+self.pos[1]], [self.pos[0]-1, 0+self.pos[1]], [self.pos[0]-2, 0+self.pos[1]], [0+self.pos[0], 0+self.pos[1]]], [[0+self.pos[0], 0+self.pos[1]], [0+self.pos[0], 1+self.pos[1]], [0+self.pos[0], 2+self.pos[1]], [0+self.pos[0], 3+self.pos[1]]]]
         try:
             for i in (self.shape[self.rot]):
                 global matrice
@@ -92,6 +97,7 @@ class tetromino_s:  # s rouge
         self.rot = 0
         self.stuck = False
         self.mini=[16,0]
+        self.color2=3
         
     def rotate(self):
         self.supprimer()
@@ -138,6 +144,7 @@ class tetromino_z:  # z vert
         self.rot = 0
         self.stuck = False
         self.mini=[24,0]
+        self.color2=4
         
     def rotate(self):
         self.supprimer()
@@ -159,7 +166,7 @@ class tetromino_z:  # z vert
                 #Ajouter 1 aux coordonnées de la pièce pour la faire apparaitre
         except:
             self.supprimer()
-            if self.rot != 0:
+            if self.rot != 1:
                 self.rot -= 1
                 self.affichage()
             else:
@@ -184,6 +191,7 @@ class tetromino_l:  # l orange
         self.rot = 0
         self.stuck = False
         self.mini=[32,0]
+        self.color2=5
 
     def rotate(self):
         self.supprimer()
@@ -232,6 +240,7 @@ class tetromino_j:  # j rose
         self.rot = 0
         self.stuck = False
         self.mini=[40,0]
+        self.color2=6
 
     def rotate(self):
         self.supprimer()
@@ -277,6 +286,7 @@ class tetromino_t:  # t violet
         self.rot = 0
         self.stuck = False
         self.mini=[48,0]
+        self.color2=7
 
     def rotate(self):
         self.supprimer()
@@ -330,18 +340,40 @@ def lignes_d(x):
 
 def lignes_():
     global score
+    sco=0
+    a=0
     for i in range (22):
         if 0 not in matrice[i]:
             matrice[i]=[0,0,0,0,0,0,0,0,0,0]
-            score+=200
+            a+=1
             lignes_d(i)
-            
+            pygame.mixer.Channel(1).play(pygame.mixer.Sound('ligne.wav'))
+    if a>0:
+        sco=100
+    if sco*a<400:
+        score+=sco*a
+    if sco*a==400:
+            score+=500
+def changement_vitesse():
+    global score,vitesse
+    if 1000<score<2000 :
+        vitesse=50
+    if 2000<score<3000 :
+        vitesse=40
+    if 3000<score<4000 :
+        vitesse=30
+    if 4000<score<5000 :
+        vitesse=20
+    if 5000<score :
+        vitesse=10
+
+
 
 ###################### CLASSE DU JEU ######################
 class App:
     def __init__(self):
         global score
-        self.start = 0
+        self.start = 'menu'
         pyxel.init(200, 200, title="T'ES TRISTE", fps=60)
         self.menu_items = ["Play", "Help", "Quit"]
         self.selected_item = 0 
@@ -350,6 +382,7 @@ class App:
         self.button_height = 32 
         self.button_width = 70
         self.tetro_futur = []
+        self.mem=[]
         #Blocs de tetris qui tombent en arrière plan
         pyxel.load("tetris.pyxres")
         self.blocks = []
@@ -368,8 +401,8 @@ class App:
 
     def update(self):
         global score,tetrominos
-        global matrice,matrice3
-        if self.start == 0:
+        global matrice,matrice3,vitesse
+        if self.start == 'menu':
             ############################### MENU ##################################
             for block in self.blocks:
                 block[2] += 0.5
@@ -394,29 +427,40 @@ class App:
                 if self.menu_items[self.selected_item] == "Play":
                     #On lance le jeu ici
                     print("Bouton Play cliqué")
-                    #pygame.mixer.Channel(1).play(pygame.mixer.Sound('levelstrt.wav'))
+                    pygame.mixer.Channel(1).play(pygame.mixer.Sound('levelstrt.wav'))
                     pygame.time.delay(1000)
-                    #pygame.mixer.Channel(0).play(pygame.mixer.Sound('main_theme.mp3'))
-                    self.start = 1
+                    if music=='original':
+                        pygame.mixer.Channel(0).play(pygame.mixer.Sound('Original_theme.mp3'),-1)
+                    if music=='metal':
+                        pygame.mixer.Channel(0).play(pygame.mixer.Sound('Tetris_metal.mp3'),-1)
+                    self.start = 'game'
                     print("Le jeu est lancé")
                 elif self.menu_items[self.selected_item] == "Help":
                     print("Bouton Help cliqué")
                 elif self.menu_items[self.selected_item] == "Quit":
                     pyxel.quit()
             ############################### FIN MENU ##################################
-        elif self.start == 1:
+        elif self.start == 'game':
             ############################### JEU #########################################
             
-
-            for i in range(2):
+            if len(self.tetro_futur)<4:
                 self.tetro_futur.append(random.randint(0,len(liste_tetro) -1 ))
             
-            if pyxel.frame_count % 15 == 0:
+            if pyxel.frame_count % vitesse == 0:
                 if score>high_score:
                             with open('best_scores.txt', 'w') as output:
                                 output.write(str(score))
                 for tetromino in tetrominos:
                     if tetromino.stuck == False:
+                        #if tetromino.color==12 and tetromino.rot==0:
+                         #   for i in tetromino.shape[tetromino.rot]:
+                          #      try:
+                           #         if matrice[i[0]+1][i[1]]!=0 and [[i[0]+1][i[1]]] not in tetromino.shape[tetromino.rot] :
+                            #            tetromino.stuck=True
+                             #   except: 
+                              #      pass
+                                        
+
                         #on verifie si on déplace la matrice (shape) du tetromino vers le bas, si dans la matrice du jeu, d'autres tétrominos sont "supprimé" (on peut faire cela en verifiant la somme de tout les nombres de la matrice, si ce nombre est le meme que la matrice précédente alors, le tétromino déscend d'une case, sinon il devient stuck)
                         
                         #nombre de l'addition de la matrice du jeu avant le déplacement du tétromino (pour vérifier si le tétromino peut descendre d'une case)
@@ -447,8 +491,12 @@ class App:
                             for i in range(22):
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
-                            tetromino.stuck = True
+                            if 0<tetromino.pos[0]<=1 and 0<tetromino.pos[1]<=8:
+                                    self.start='game_over'
+                            tetromino.stuck = True 
                             pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
+                            
+                            
 
                             
                             #on regarge si ça crée une erreur 'list index out of range'
@@ -466,12 +514,12 @@ class App:
                             for i in range(22):
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
-                            if 0<tetromino.pos[0]<2 and 0<tetromino.pos[1]<8:
-                                self.start=3
+                            
                                 
-                            else:
-                                tetromino.stuck = True
-                                pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
+                            if 0<tetromino.pos[0]<=1 and 0<tetromino.pos[1]<=8:
+                                    self.start='game_over'
+                            tetromino.stuck = True
+                            pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
                             
                         
             # afficher le triomino en cours
@@ -479,12 +527,13 @@ class App:
             for tetromino in tetrominos:
                 if tetromino.stuck == False:
                         
-                    
-                    if pyxel.btnp(pyxel.KEY_DOWN):
+                    if  pyxel.btnp(pyxel.KEY_UP):
+                        pass
+                    if pyxel.btnp(pyxel.KEY_Q) or pyxel.btnp(pyxel.KEY_D):
                         if not (tetromino.pos[1] == -1 and tetromino.color == 11 and tetromino.rot == 1):
                             tetromino.rotate()
 
-                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] >= 0 and tetromino.color==11 and tetromino.rot==1:
+                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] >= 0 and tetromino.color==11 and tetromino.rot==1 and ([[tetromino.pos[1]-1],[tetromino.pos[0]]] not in tetromino.shape[tetromino.rot] or matrice[tetromino.pos[1]-1][tetromino.pos[0]]==0):
                         tetromino.supprimer()
                         try:
                             tetromino.pos[1] -= 1
@@ -492,23 +541,33 @@ class App:
                             
                             tetromino.pos[1] += 1
 
-                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > 0:
+                    if pyxel.btnp(pyxel.KEY_LEFT) and tetromino.pos[1] > 0 and ([[tetromino.pos[1]-1],[tetromino.pos[0]]] not in tetromino.shape[tetromino.rot]or matrice[tetromino.pos[1]-1][tetromino.pos[0]]==0) :
+                        if not(tetromino.color==11 and tetromino.rot==1):
+                            tetromino.supprimer()
+                            try:
+                                tetromino.pos[1] -= 1
+                            except:
+                                
+                                tetromino.pos[1] += 1
+                            
+                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] <= 8 and tetromino.color==12 and tetromino.rot==0 and ([[tetromino.pos[1]],[tetromino.pos[0]-1]]not in tetromino.shape[tetromino.rot] or matrice[tetromino.pos[1]+1][tetromino.pos[0]]==0) :
                         tetromino.supprimer()
                         try:
-                            tetromino.pos[1] -= 1
+                            tetromino.pos[1] += 1
                         except:
                             
-                            tetromino.pos[1] += 1
-                            
-                    
+                            tetromino.pos[1] -= 1
 
-                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 8:
-                        tetromino.supprimer()
-                        try:
-                            tetromino.pos[1] += 1
-                        except:
-                            
-                            tetromino.pos[1] -= 1
+                    if pyxel.btnp(pyxel.KEY_RIGHT) and tetromino.pos[1] < 8 and ([[tetromino.pos[1]],[tetromino.pos[0]-1]]not in tetromino.shape[tetromino.rot]or matrice[tetromino.pos[1]+1][tetromino.pos[0]]==0) :
+                        if tetromino.color==12 and tetromino.rot==0:
+                            pass
+                        else:
+                            tetromino.supprimer()
+                            try:
+                                tetromino.pos[1] += 1
+                            except:
+                                
+                                tetromino.pos[1] -= 1
                     if pyxel.btnp(pyxel.KEY_SPACE):
                     
                         #tetrominos pos y et pos x jusqu'a une collision avec un autre tetromino ou le bas
@@ -542,8 +601,11 @@ class App:
                                 for i in range(22):
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
+                                if 0<tetromino.pos[0]<=1 and 0<tetromino.pos[1]<=8:
+                                    self.start='game_over'
                                 tetromino.stuck = True
                                 pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
+                                
                                     
                                     
                                 
@@ -564,8 +626,10 @@ class App:
                                 for i in range(22):
                                         for j in range(10):
                                             matrice[i][j]=matrice3[i][j]
-                                
+                                if 0<tetromino.pos[0]<=1 and 0<tetromino.pos[1]<=8:
+                                    self.start='game_over'
                                 tetromino.stuck = True
+                                
                                 pygame.mixer.Channel(1).play(pygame.mixer.Sound('stuck.wav'))
                     tetromino.affichage()
     
@@ -581,25 +645,25 @@ class App:
                 else:
                     tetrominos.pop()
                     score+=15
+                    ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
+                    t = self.tetro_futur.pop(0)
+                    tetrominos.append(ls[t])
             if check == 0:
                 
-                ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
-                idx = random.randint(0, 6)
-                t = self.tetro_futur.pop(0)
-                self.tetro_futur.append(idx)
-                tetrominos.append(ls[t])
+                
                 lignes_()
+                changement_vitesse()
                 
 
             ############################### FIN JEU #########################################
             
 
     def draw(self):
-        global score
-        if self.start==3:
+        global score,vitesse
+        if self.start=='game_over':
             pyxel.cls(0)
             pyxel.text(80,100,f"GAME OVER", 7)
-        if self.start == 0:
+        if self.start == 'menu':
         ############################### MENU #########################################
             pyxel.cls(0)
             for block in self.blocks:
@@ -619,7 +683,7 @@ class App:
                 pyxel.rectb(65, 50 + i*self.button_height, self.button_width, self.button_height, color)
                 pyxel.text(90, 63 + i*self.button_height, item, 11)
         ############################### FIN MENU #########################################
-        elif self.start == 1:
+        elif self.start == 'game':
             ############################### JEU #########################################
             pyxel.cls(1)
         # affichage de la matrice de jeu 0 en noir 1 en jaune, 2 en bleu, 3 en rouge, 4 en vert, 5 en orange, 6 en rose, 7 en violet
@@ -649,14 +713,16 @@ class App:
                     elif matrice[j][i] == 7:
                         pyxel.rect(i*10+50, j*10, 10, 10, 2)
                         pyxel.blt(i*10+50 +1, j*10 +1,0,48,8,8,8)
-            pyxel.text(2,2,f"SCORE: {score}", 11)
-            pyxel.text(2,8, f'HIGHEST:{high_score}', 11)
+            pyxel.text(2,2,f"SCORE: \n{score}", 11,)
+            pyxel.text(2,16, f'HIGHEST:\n{high_score}', 11)
+            pyxel.text(2,40, f'VITESSE:\n{vitesse}', 11)
             ############################### FIN JEU #########################################
             #pyxel.rect(2, 40, 45, 140, 0)
             ls = [tetromino_i(), tetromino_o(), tetromino_t(), tetromino_s(), tetromino_z(), tetromino_j(), tetromino_l()]
             for i in range(len(self.tetro_futur)):
-                pyxel.blt(180, 5*i,0,ls[self.tetro_futur[i]].mini[0],ls[self.tetro_futur[i]].mini[1],8,8)
-                     
+                pyxel.blt(180, 5*i +5,0,ls[self.tetro_futur[i]].mini[0],ls[self.tetro_futur[i]].mini[1],8,8)
+            for i in self.mem:
+                pyxel.blt(180, 5*i +5,0,i.mini[0],i.mini[1],8,8)
 
 pygame.mixer.init()
 pygame.mixer.Channel(0).set_volume(0.2)
